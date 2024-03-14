@@ -4,32 +4,46 @@ using UnityEngine;
 
 public class DepthFinder : MonoBehaviour
 {
+    public Transform headset;
+    public MeshFilter mesh;
+    bool run = true;
     // Start is called before the first frame update
     void Start()
     {
+        if(transform.GetComponent<OVRSemanticClassification>().Contains("FLOOR"))
+        {
+            run = false;
+            Debug.Log("NO FLOOR");
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        //Call NearestVertexTo(leftController.position, roomObj)
+        if (run)
+        {
+            Vector3 nearestVertex = NearestVertexTo(headset.position);
+            float dist = getDist(nearestVertex, headset.position);
+            if (dist < headset.GetComponent<HeadsetScript>().closestDist)
+            {
+                headset.GetComponent<HeadsetScript>().closestDist = dist;
+            }
+        }
+
         //Call NearestVertexTo(rightController.position, roomObj)
         //Call NearestVertexTo(camera.position, roomObj)
 
-        //set vibrationIntensity of both controllers to magntiude using getDist
-        //set audio intensity of headset to magntiude using getDist
     }
 
-    public Vector3 NearestVertexTo(Vector3 point, Transform obj)
+    public Vector3 NearestVertexTo(Vector3 point)
     {
         point = transform.InverseTransformPoint(point);
 
-        Mesh mesh = obj.GetComponent<MeshFilter>().mesh;
         float minDist = float.MaxValue;
 
         Vector3 nearestVertex = Vector3.zero;
 
-        foreach(Vector3 vertex in mesh.vertices) {
+        foreach(Vector3 vertex in mesh.mesh.vertices) {
             float diff = getDist(point, vertex);
             if (diff < minDist)
             {
