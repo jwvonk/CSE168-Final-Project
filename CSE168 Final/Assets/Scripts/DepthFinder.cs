@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class DepthFinder : MonoBehaviour
 {
-    public Transform headset;
+    public GameObject mainCamera;
+    private HeadsetScript headsetScript;
     public MeshFilter mesh;
     bool run = true;
     // Start is called before the first frame update
@@ -15,6 +16,11 @@ public class DepthFinder : MonoBehaviour
             run = false;
             Debug.Log("NO FLOOR");
         }
+        if (mainCamera == null)
+        {
+            mainCamera = GameObject.FindWithTag("MainCamera");
+            headsetScript = GameObject.FindWithTag("CameraRig").GetComponent<HeadsetScript>();
+        }
     }
 
     // Update is called once per frame
@@ -22,11 +28,12 @@ public class DepthFinder : MonoBehaviour
     {
         if (run)
         {
-            Vector3 nearestVertex = NearestVertexTo(headset.position);
-            float dist = getDist(nearestVertex, headset.position);
-            if (dist < headset.GetComponent<HeadsetScript>().closestDist)
+            Vector3 nearestVertex = NearestVertexTo(mainCamera.transform.position);
+            float dist = getDist(nearestVertex, mainCamera.transform.position);
+            if (dist < headsetScript.closestDist)
             {
-                headset.GetComponent<HeadsetScript>().closestDist = dist;
+                headsetScript.closestDist = dist;
+                headsetScript.closestObj = gameObject;
             }
         }
 
