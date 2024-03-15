@@ -2,21 +2,23 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Pool;
 
 public class HeadsetScript : MonoBehaviour
 {
     public int maxObstacles;
-    public List<Tuple<GameObject, float>> ClosestObstacles;
-    public AudioClip audioClip;
+    public List<Tuple<GameObject, float, Vector3>> ClosestObstacles;
     //public Dictionary<GameObject, float> Obstacles;
-    private List<AudioSource> audioSources = new List<AudioSource>();
     [SerializeField] private Material TrackedMaterial;
-    private Renderer ren;
+    [SerializeField] private List<AudioClip> Clips;
+    [SerializeField] private GameObject AudioSourcePrefab;
+    private List<GameObject> AudioSources;
+
     // Start is called before the first frame update
     void Start()
     {
-        ClosestObstacles = new List<Tuple<GameObject, float>>();
-        ren = GetComponent<Renderer>();
+        ClosestObstacles = new List<Tuple<GameObject, float, Vector3>>();
+        AudioSources = new List<GameObject>();
     }
 
     // Update is called once per frame
@@ -25,38 +27,39 @@ public class HeadsetScript : MonoBehaviour
         
         //Debug.Log(closestDist);
         //closestDist = float.MaxValue;
-        foreach (var pair in ClosestObstacles)
+        for (int i = 0; i < ClosestObstacles.Count; i++)
         {
-            // pair.Item1.AddComponent sound thing
-            // soundthing.volume = pair.item2
-            // set audio and vibration intensity to closestDist
-            pair.Item1.GetComponentInChildren<Renderer>().material = TrackedMaterial;
-            AudioSource audioSource = pair.Item1.GetComponent<AudioSource>();
-            if(audioSource != null)
+            var pair = ClosestObstacles[i];
+
+            if (AudioSources.Count <= i)
             {
-               float volume = CalculateVolume(pair.Item2);
-               audioSource.volume = volume;
-                Debug.Log($"Volume: {volume}");
+                AudioSources.Add(Instantiate(AudioSourcePrefab));
+            }
+            AudioSources[i].SetActive(true);
+            AudioSources[i].transform.position = pair.Item3;
+            AudioSource audioSource = AudioSources[i].GetComponent<AudioSource>();
+            if (audioSource != null)
+            {
+                audioSource.clip = Clips[(Clips.Count / ClosestObstacles.Count) * i];
                 if (!audioSource.isPlaying)
                 {
                     audioSource.Play();
                 }
             }
+            // pair.Item1.AddComponent sound thing
+            // soundthing.volume = pair.item2
+            // set audio and vibration intensity to closestDist
+            pair.Item1.GetComponentInChildren<Renderer>().material = TrackedMaterial;
+
+        }
+
+        for (int i = ClosestObstacles.Count; i < maxObstacles; i++)
+        {
+            if (AudioSources.Count > i)
+            {
+                AudioSources[i].SetActive(false);
+            }
         }
         ClosestObstacles.Clear();
-    }
-    float CalculateVolume(float distance)
-    {
-        // Adjust the volume based on the distance
-        // You can customize the function to fit your desired volume curve
-        // For example, you might want the volume to decrease linearly with distance
-        float maxVolume = 1f;
-        float minVolume = 0f;
-        float maxDistance = 10f; // Adjust this value based on your scene
-        float minDistance = 1f; // Adjust this value based on your scene
-
-        float volume = maxVolume - ((distance - minDistance) / (maxDistance - minDistance)) * (maxVolume - minVolume);
-        volume = Mathf.Clamp01(volume); // Ensure volume is within range [0, 1]
-        return volume;
     }
 }

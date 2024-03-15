@@ -55,20 +55,22 @@ public class DepthFinder : MonoBehaviour
             var userPoints = new List<Vector3>
             {
                 mainCamera.transform.position,
-                new Vector3(mainCamera.transform.position.x, mainCamera.transform.position.y / 2, mainCamera.transform.position.z),
+                new Vector3(mainCamera.transform.position.x, mainCamera.transform.position.y * 2f / 3f, mainCamera.transform.position.z),
+                new Vector3(mainCamera.transform.position.x, mainCamera.transform.position.y / 3f, mainCamera.transform.position.z),
                 new Vector3(mainCamera.transform.position.x, 0.2f, mainCamera.transform.position.z)
             };
             var nearestDist = float.MaxValue;
+            Vector3 nearestVertex = new Vector3();
             foreach (var point in userPoints)
             {
-                Vector3 nearestVertex = collider.ClosestPoint(mainCamera.transform.position);
+                nearestVertex = collider.ClosestPoint(mainCamera.transform.position);
                 float dist = Vector3.Distance(nearestVertex, mainCamera.transform.position);
                 nearestDist = Mathf.Min(nearestDist, dist);
             }
 
             if (headsetScript.ClosestObstacles.Count < headsetScript.maxObstacles)
             {
-                headsetScript.ClosestObstacles.Add(Tuple.Create(gameObject, nearestDist));
+                headsetScript.ClosestObstacles.Add(Tuple.Create(gameObject, nearestDist, nearestVertex));
                 headsetScript.ClosestObstacles.Sort((x, y) => x.Item2.CompareTo(y.Item2));
 
             }
@@ -76,7 +78,7 @@ public class DepthFinder : MonoBehaviour
             {
                 if (headsetScript.ClosestObstacles[headsetScript.ClosestObstacles.Count - 1].Item2 > nearestDist)
                 {
-                    headsetScript.ClosestObstacles[headsetScript.ClosestObstacles.Count - 1] = Tuple.Create(gameObject, nearestDist);
+                    headsetScript.ClosestObstacles[headsetScript.ClosestObstacles.Count - 1] = Tuple.Create(gameObject, nearestDist, nearestVertex);
                     headsetScript.ClosestObstacles.Sort((x, y) => x.Item2.CompareTo(y.Item2));
                 }
             }

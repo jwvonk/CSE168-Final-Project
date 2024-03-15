@@ -176,6 +176,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3d14d4a0875b8b499488059af9ba74e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainCamera: {fileID: 0}
   collider: {fileID: 6276670958833580427}
   DefaultMaterial: {fileID: 2100000, guid: 78cc23288574b4d4191fa3efee3950a0, type: 2}
+  ren: {fileID: 0}
