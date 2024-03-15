@@ -23,7 +23,7 @@ public class DepthFinder : MonoBehaviour
         if (transform.GetComponent<OVRSemanticClassification>().Contains("FLOOR") || transform.GetComponent<OVRSemanticClassification>().Contains("CEILING"))
         {
             run = false;
-        } 
+        }
         else
         {
             if (mainCamera == null)
@@ -48,7 +48,7 @@ public class DepthFinder : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
         if (run && headsetScript.ClosestObstacles != null)
         {
             ren.material = DefaultMaterial;
@@ -82,34 +82,86 @@ public class DepthFinder : MonoBehaviour
             }
 
         }
-
         //Call NearestVertexTo(leftController.position, roomObj)
-        if (run && leftControllerScript.ClosestObstacle.Item1 != null)
+        if (run && leftControllerScript.ClosestObstacles != null)
         {
-            var userPoint = LeftController.transform.position;
-
-            Vector3 nearestVertex = collider.ClosestPoint(LeftController.transform.position);
-            float nearestDist = Vector3.Distance(nearestVertex, LeftController.transform.position);
-
-            if (nearestDist < leftControllerScript.ClosestObstacle.Item2)
+            var userPoints = new List<Vector3>
             {
-                leftControllerScript.ClosestObstacle = Tuple.Create(gameObject, nearestDist);
+                LeftController.transform.position,
+                new Vector3(LeftController.transform.position.x, LeftController.transform.position.y / 2, LeftController.transform.position.z),
+                new Vector3(LeftController.transform.position.x, 0.2f, LeftController.transform.position.z)
+            };
+            var nearestDist = float.MaxValue;
+            foreach (var point in userPoints)
+            {
+                Vector3 nearestVertex = collider.ClosestPoint(LeftController.transform.position);
+                float dist = Vector3.Distance(nearestVertex, LeftController.transform.position);
+                nearestDist = Mathf.Min(nearestDist, dist);
+            }
+
+            if (leftControllerScript.ClosestObstacles.Count <= leftControllerScript.maxObstacles)
+            {
+                leftControllerScript.ClosestObstacles.Add(Tuple.Create(gameObject, nearestDist));
+                leftControllerScript.ClosestObstacles.Sort((x, y) => x.Item2.CompareTo(y.Item2));
+
+            }
+            else
+            {
+                if (leftControllerScript.ClosestObstacles[leftControllerScript.ClosestObstacles.Count - 1].Item2 > nearestDist)
+                {
+                    leftControllerScript.ClosestObstacles[leftControllerScript.ClosestObstacles.Count - 1] = Tuple.Create(gameObject, nearestDist);
+                    leftControllerScript.ClosestObstacles.Sort((x, y) => x.Item2.CompareTo(y.Item2));
+                }
+            }
+
+            if (nearestDist < leftControllerScript.closestDist)
+            {
+                leftControllerScript.closestDist = nearestDist;
+                leftControllerScript.closestObj = gameObject;
             }
 
         }
 
 
-        if (run && rightControllerScript.ClosestObstacle.Item1 != null)
+        //Call NearestVertexTo(rightController.position, roomObj)
+        if (run && rightControllerScript.ClosestObstacles != null)
         {
-            var userPoint = RightController.transform.position;
-            Vector3 nearestVertex = collider.ClosestPoint(RightController.transform.position);
-            float nearestDist = Vector3.Distance(nearestVertex, RightController.transform.position);
-
-            if (nearestDist < leftControllerScript.ClosestObstacle.Item2)
+            var userPoints = new List<Vector3>
             {
-                leftControllerScript.ClosestObstacle = Tuple.Create(gameObject, nearestDist);
+                RightController.transform.position,
+                new Vector3(RightController.transform.position.x, RightController.transform.position.y / 2, RightController.transform.position.z),
+                new Vector3(RightController.transform.position.x, 0.2f, RightController.transform.position.z)
+            };
+            var nearestDist = float.MaxValue;
+            foreach (var point in userPoints)
+            {
+                Vector3 nearestVertex = collider.ClosestPoint(RightController.transform.position);
+                float dist = Vector3.Distance(nearestVertex, RightController.transform.position);
+                nearestDist = Mathf.Min(nearestDist, dist);
+            }
+
+            if (rightControllerScript.ClosestObstacles.Count <= rightControllerScript.maxObstacles)
+            {
+                rightControllerScript.ClosestObstacles.Add(Tuple.Create(gameObject, nearestDist));
+                rightControllerScript.ClosestObstacles.Sort((x, y) => x.Item2.CompareTo(y.Item2));
+
+            }
+            else
+            {
+                if (rightControllerScript.ClosestObstacles[rightControllerScript.ClosestObstacles.Count - 1].Item2 > nearestDist)
+                {
+                    rightControllerScript.ClosestObstacles[rightControllerScript.ClosestObstacles.Count - 1] = Tuple.Create(gameObject, nearestDist);
+                    rightControllerScript.ClosestObstacles.Sort((x, y) => x.Item2.CompareTo(y.Item2));
+                }
+            }
+
+            if (nearestDist < rightControllerScript.closestDist)
+            {
+                rightControllerScript.closestDist = nearestDist;
+                rightControllerScript.closestObj = gameObject;
             }
 
         }
     }
+
 }
