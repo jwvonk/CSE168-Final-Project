@@ -1828,7 +1828,7 @@ PrefabInstance:
       objectReference: {fileID: 1718982164}
     - target: {fileID: 3201088181125678409, guid: 5d7a2e35fc7dcc245a9e91ad35cb4a21, type: 3}
       propertyPath: m_VersionIndex
-      value: 1449
+      value: 1452
       objectReference: {fileID: 0}
     - target: {fileID: 7741000006195424133, guid: 5d7a2e35fc7dcc245a9e91ad35cb4a21, type: 3}
       propertyPath: m_Mesh
@@ -9964,6 +9964,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f8d7f47f06254a4fb35b02a285808f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxObstacles: 10
   closestDist: 0
   closestObj: {fileID: 0}
 --- !u!1 &1946234627

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,18 +16,22 @@ public class DepthFinder : MonoBehaviour
         {
             run = false;
             Debug.Log("NO FLOOR");
-        }
-        if (mainCamera == null)
+        } else
         {
-            mainCamera = GameObject.FindWithTag("MainCamera");
+            if (mainCamera == null)
+            {
+                mainCamera = GameObject.FindWithTag("MainCamera");
+            }
             headsetScript = GameObject.FindWithTag("CameraRig").GetComponent<HeadsetScript>();
         }
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (run)
+        //GetComponentInChildren<Renderer>().material.color = Color.blue;
+        if (run && headsetScript.ClosestObstacles != null)
         {
             var userPoints = new List<Vector3>
             {
@@ -41,7 +46,22 @@ public class DepthFinder : MonoBehaviour
                 float dist = getDist(nearestVertex, mainCamera.transform.position);
                 nearestDist = Mathf.Min(nearestDist, dist);
             }
-            
+
+            if (headsetScript.ClosestObstacles.Count <= headsetScript.maxObstacles)
+            {
+                headsetScript.ClosestObstacles.Add(Tuple.Create(gameObject, nearestDist));
+                headsetScript.ClosestObstacles.Sort((x, y) => x.Item2.CompareTo(y.Item2));
+
+            }
+            else
+            {
+                if (headsetScript.ClosestObstacles[headsetScript.ClosestObstacles.Count - 1].Item2 > nearestDist)
+                {
+                    headsetScript.ClosestObstacles[headsetScript.ClosestObstacles.Count - 1] = Tuple.Create(gameObject, nearestDist);
+                    headsetScript.ClosestObstacles.Sort((x, y) => x.Item2.CompareTo(y.Item2));
+                }
+            }
+
             if (nearestDist < headsetScript.closestDist)
             {
                 headsetScript.closestDist = nearestDist;
