@@ -91,8 +91,6 @@ public class DepthFinder : MonoBehaviour
 
         }
 
-        }
-
         //Call NearestVertexTo(leftController.position, roomObj)
         if (run && leftControllerScript.ClosestObstacles != null)
         {
@@ -105,8 +103,8 @@ public class DepthFinder : MonoBehaviour
             var nearestDist = float.MaxValue;
             foreach (var point in userPoints)
             {
-                Vector3 nearestVertex = NearestVertexTo(LeftController.transform.position);
-                float dist = getDist(nearestVertex, LeftController.transform.position);
+                Vector3 nearestVertex = collider.ClosestPoint(LeftController.transform.position);
+                float dist = Vector3.Distance(nearestVertex, LeftController.transform.position);
                 nearestDist = Mathf.Min(nearestDist, dist);
             }
 
@@ -134,7 +132,6 @@ public class DepthFinder : MonoBehaviour
         }
 
 
-        //Call NearestVertexTo(rightController.position, roomObj)
         if (run && rightControllerScript.ClosestObstacles != null)
         {
             var userPoints = new List<Vector3>
@@ -146,8 +143,8 @@ public class DepthFinder : MonoBehaviour
             var nearestDist = float.MaxValue;
             foreach (var point in userPoints)
             {
-                Vector3 nearestVertex = NearestVertexTo(RightController.transform.position);
-                float dist = getDist(nearestVertex, RightController.transform.position);
+                Vector3 nearestVertex = collider.ClosestPoint(RightController.transform.position);
+                float dist = Vector3.Distance(nearestVertex, RightController.transform.position);
                 nearestDist = Mathf.Min(nearestDist, dist);
             }
 
@@ -173,37 +170,5 @@ public class DepthFinder : MonoBehaviour
             }
 
         }
-        //Call NearestVertexTo(camera.position, roomObj)
-
     }
-
-    public Vector3 NearestVertexTo(Vector3 point)
-    {
-        point = transform.InverseTransformPoint(point);
-
-    //    float minDist = float.MaxValue;
-
-    //    Vector3 nearestVertex = Vector3.zero;
-
-    //    foreach(Vector3 vertex in mesh.mesh.vertices) {
-    //        if (GetComponent<OVRSceneAnchor>().Uuid.ToString() == "e3b41f99-4960-4736-b1b4-548f343f40e5")
-    //        {
-    //            Debug.Log(vertex);
-    //        }
-    //        float diff = getDist(point, vertex);
-    //        if (diff < minDist)
-    //        {
-    //            minDist = diff;
-    //            nearestVertex = vertex;
-    //        }
-
-    //    }
-
-    //    return transform.TransformPoint(nearestVertex);
-    //}
-
-    //public float getDist(Vector3 point1, Vector3 point2)
-    //{
-    //    return (point1 - point2).sqrMagnitude;
-    //}
 }
