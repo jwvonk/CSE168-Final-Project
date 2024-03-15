@@ -5,6 +5,10 @@ TagManager:
   serializedVersion: 2
   tags:
   - CameraRig
+  - LeftController
+  - RightController
+  - LeftControllerTracker
+  - RightControllerTracker
   layers:
   - Default
   - TransparentFX
