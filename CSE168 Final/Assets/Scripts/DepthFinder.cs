@@ -7,15 +7,28 @@ public class DepthFinder : MonoBehaviour
 {
     public GameObject mainCamera;
     private HeadsetScript headsetScript;
-    public MeshFilter mesh;
+    public Collider collider;
     bool run = true;
+
+    private void Awake()
+    {
+        var a = GetComponent<OVRScenePlane>();
+        if (a)
+        {
+            a.OffsetChildren = false;
+        }
+    }
     // Start is called before the first frame update
     void Start()
     {
-        if(transform.GetComponent<OVRSemanticClassification>().Contains("FLOOR"))
+        var a = GetComponent<OVRScenePlane>();
+        if (a)
+        {
+            a.OffsetChildren = false;
+        }
+        if (transform.GetComponent<OVRSemanticClassification>().Contains("FLOOR") || transform.GetComponent<OVRSemanticClassification>().Contains("CEILING"))
         {
             run = false;
-            Debug.Log("NO FLOOR");
         } else
         {
             if (mainCamera == null)
@@ -30,7 +43,7 @@ public class DepthFinder : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //GetComponentInChildren<Renderer>().material.color = Color.blue;
+        GetComponentInChildren<Renderer>().material.color = Color.blue;
         if (run && headsetScript.ClosestObstacles != null)
         {
             var userPoints = new List<Vector3>
@@ -42,12 +55,12 @@ public class DepthFinder : MonoBehaviour
             var nearestDist = float.MaxValue;
             foreach (var point in userPoints)
             {
-                Vector3 nearestVertex = NearestVertexTo(mainCamera.transform.position);
-                float dist = getDist(nearestVertex, mainCamera.transform.position);
+                Vector3 nearestVertex = collider.ClosestPoint(mainCamera.transform.position);
+                float dist = Vector3.Distance(nearestVertex, mainCamera.transform.position);
                 nearestDist = Mathf.Min(nearestDist, dist);
             }
 
-            if (headsetScript.ClosestObstacles.Count <= headsetScript.maxObstacles)
+            if (headsetScript.ClosestObstacles.Count < headsetScript.maxObstacles)
             {
                 headsetScript.ClosestObstacles.Add(Tuple.Create(gameObject, nearestDist));
                 headsetScript.ClosestObstacles.Sort((x, y) => x.Item2.CompareTo(y.Item2));
@@ -62,42 +75,37 @@ public class DepthFinder : MonoBehaviour
                 }
             }
 
-            if (nearestDist < headsetScript.closestDist)
-            {
-                headsetScript.closestDist = nearestDist;
-                headsetScript.closestObj = gameObject;
-            }
-
         }
 
-        //Call NearestVertexTo(rightController.position, roomObj)
-        //Call NearestVertexTo(camera.position, roomObj)
-
     }
 
-    public Vector3 NearestVertexTo(Vector3 point)
-    {
-        point = transform.InverseTransformPoint(point);
+    //public Vector3 NearestVertexTo(Vector3 point)
+    //{
+    //    point = transform.InverseTransformPoint(point);
 
-        float minDist = float.MaxValue;
+    //    float minDist = float.MaxValue;
 
-        Vector3 nearestVertex = Vector3.zero;
+    //    Vector3 nearestVertex = Vector3.zero;
 
-        foreach(Vector3 vertex in mesh.mesh.vertices) {
-            float diff = getDist(point, vertex);
-            if (diff < minDist)
-            {
-                minDist = diff;
-                nearestVertex = vertex;
-            }
+    //    foreach(Vector3 vertex in mesh.mesh.vertices) {
+    //        if (GetComponent<OVRSceneAnchor>().Uuid.ToString() == "e3b41f99-4960-4736-b1b4-548f343f40e5")
+    //        {
+    //            Debug.Log(vertex);
+    //        }
+    //        float diff = getDist(point, vertex);
+    //        if (diff < minDist)
+    //        {
+    //            minDist = diff;
+    //            nearestVertex = vertex;
+    //        }
 
-        }
+    //    }
 
-        return transform.TransformPoint(nearestVertex);
-    }
+    //    return transform.TransformPoint(nearestVertex);
+    //}
 
-    public float getDist(Vector3 point1, Vector3 point2)
-    {
-        return (point1 - point2).sqrMagnitude;
-    }
+    //public float getDist(Vector3 point1, Vector3 point2)
+    //{
+    //    return (point1 - point2).sqrMagnitude;
+    //}
 }

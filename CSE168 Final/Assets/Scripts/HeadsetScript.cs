@@ -11,7 +11,6 @@ public class HeadsetScript : MonoBehaviour
 
     [HideInInspector] public float closestDist;
     [HideInInspector] public GameObject closestObj;
-    private GameObject prevClosestObj;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,11 +20,15 @@ public class HeadsetScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //set audio and vibration intensity to closestDist
+        
         //Debug.Log(closestDist);
         //closestDist = float.MaxValue;
         foreach (var pair in ClosestObstacles)
         {
+            // pair.Item1.AddComponent sound thing
+            // soundthing.volume = pair.item2
+            // set audio and vibration intensity to closestDist
+            Debug.Log(pair.Item1.GetComponent<OVRSceneAnchor>().Uuid.ToString() + ":" + pair.Item2.ToString());
             pair.Item1.GetComponentInChildren<Renderer>().material.color = Color.red;
         }
         ClosestObstacles.Clear();
