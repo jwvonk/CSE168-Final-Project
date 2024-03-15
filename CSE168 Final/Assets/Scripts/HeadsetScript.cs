@@ -10,13 +10,13 @@ public class HeadsetScript : MonoBehaviour
     public AudioClip audioClip;
     //public Dictionary<GameObject, float> Obstacles;
     private List<AudioSource> audioSources = new List<AudioSource>();
-
-    [HideInInspector] public float closestDist;
-    [HideInInspector] public GameObject closestObj;
+    [SerializeField] private Material TrackedMaterial;
+    private Renderer ren;
     // Start is called before the first frame update
     void Start()
     {
         ClosestObstacles = new List<Tuple<GameObject, float>>();
+        ren = GetComponent<Renderer>();
     }
 
     // Update is called once per frame
@@ -30,8 +30,7 @@ public class HeadsetScript : MonoBehaviour
             // pair.Item1.AddComponent sound thing
             // soundthing.volume = pair.item2
             // set audio and vibration intensity to closestDist
-            Debug.Log(pair.Item1.GetComponent<OVRSceneAnchor>().Uuid.ToString() + ":" + pair.Item2.ToString());
-            pair.Item1.GetComponentInChildren<Renderer>().material.color = Color.red;
+            pair.Item1.GetComponentInChildren<Renderer>().material = TrackedMaterial;
             AudioSource audioSource = pair.Item1.GetComponent<AudioSource>();
             if(audioSource != null)
             {

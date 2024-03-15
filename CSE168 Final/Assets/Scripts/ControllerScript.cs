@@ -7,14 +7,11 @@ using UnityEngine;
 public class ControllerScript : MonoBehaviour
 {
     public int maxObstacles;
-    public List<Tuple<GameObject, float>> ClosestObstacles;
+    public Tuple<GameObject, float> ClosestObstacle;
     public bool isLeftController;
     public HapticClip clip;	 // Assign this in the Unity editor
     private HapticClipPlayer player;
-    //public Dictionary<GameObject, float> Obstacles;
 
-    [HideInInspector] public float closestDist;
-    [HideInInspector] public GameObject closestObj;
     private GameObject prevClosestObj;
 
     void Awake()
@@ -24,16 +21,16 @@ public class ControllerScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        ClosestObstacles = new List<Tuple<GameObject, float>>();
+        ClosestObstacle = Tuple.Create<GameObject, float>(null, float.MaxValue);
     }
 
     // Update is called once per frame
     void Update()
     {
         //set audio and vibration intensity to closestDist
-        foreach (var pair in ClosestObstacles)
+        if (ClosestObstacle.Item1 != null)
         {
-            float amplitude = CalculateAmplitude(pair.Item2);
+            float amplitude = CalculateAmplitude(ClosestObstacle.Item2);
             player.amplitude = amplitude;
             if(isLeftController == true)
             {
@@ -45,7 +42,8 @@ public class ControllerScript : MonoBehaviour
             }
              
         }
-        ClosestObstacles.Clear();
+        ClosestObstacle = Tuple.Create<GameObject, float>(null, float.MaxValue);
+
     }
     public void StopHaptics()
     {

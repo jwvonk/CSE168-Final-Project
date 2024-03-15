@@ -73,7 +73,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8586818940698521391
 Transform:
   m_ObjectHideFlags: 0
@@ -177,4 +177,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 0}
-  mesh: {fileID: 2234007019178460503}
+  collider: {fileID: 6276670958833580427}
+  DefaultMaterial: {fileID: 2100000, guid: 78cc23288574b4d4191fa3efee3950a0, type: 2}

@@ -5,35 +5,26 @@ using UnityEngine;
 
 public class DepthFinder : MonoBehaviour
 {
-    public GameObject mainCamera;
-    public GameObject LeftController;
-    public GameObject RightController;
+    private GameObject mainCamera;
+    private GameObject LeftController;
+    private GameObject RightController;
     private HeadsetScript headsetScript;
     private ControllerScript leftControllerScript;
     private ControllerScript rightControllerScript;
     public Collider collider;
     bool run = true;
+    [SerializeField] private Material DefaultMaterial;
+    [HideInInspector] public Renderer ren;
 
-    private void Awake()
-    {
-        var a = GetComponent<OVRScenePlane>();
-        if (a)
-        {
-            a.OffsetChildren = false;
-        }
-    }
     // Start is called before the first frame update
     void Start()
     {
-        var a = GetComponent<OVRScenePlane>();
-        if (a)
-        {
-            a.OffsetChildren = false;
-        }
+
         if (transform.GetComponent<OVRSemanticClassification>().Contains("FLOOR") || transform.GetComponent<OVRSemanticClassification>().Contains("CEILING"))
         {
             run = false;
-        } else
+        } 
+        else
         {
             if (mainCamera == null)
             {
@@ -50,16 +41,17 @@ public class DepthFinder : MonoBehaviour
                 RightController = GameObject.FindWithTag("RightController");
             }
             rightControllerScript = GameObject.FindWithTag("RightControllerTracker").GetComponent<ControllerScript>();
+            ren = GetComponentInChildren<Renderer>();
         }
-
     }
 
     // Update is called once per frame
     void Update()
     {
-        GetComponentInChildren<Renderer>().material.color = Color.blue;
+        
         if (run && headsetScript.ClosestObstacles != null)
         {
+            ren.material = DefaultMaterial;
             var userPoints = new List<Vector3>
             {
                 mainCamera.transform.position,
@@ -92,47 +84,22 @@ public class DepthFinder : MonoBehaviour
         }
 
         //Call NearestVertexTo(leftController.position, roomObj)
-        if (run && leftControllerScript.ClosestObstacles != null)
+        if (run && leftControllerScript.ClosestObstacle.Item1 != null)
         {
-            var userPoints = new List<Vector3>
-            {
-                LeftController.transform.position,
-                new Vector3(LeftController.transform.position.x, LeftController.transform.position.y / 2, LeftController.transform.position.z),
-                new Vector3(LeftController.transform.position.x, 0.2f, LeftController.transform.position.z)
-            };
-            var nearestDist = float.MaxValue;
-            foreach (var point in userPoints)
-            {
-                Vector3 nearestVertex = collider.ClosestPoint(LeftController.transform.position);
-                float dist = Vector3.Distance(nearestVertex, LeftController.transform.position);
-                nearestDist = Mathf.Min(nearestDist, dist);
-            }
+            var userPoint = LeftController.transform.position;
 
-            if (leftControllerScript.ClosestObstacles.Count <= leftControllerScript.maxObstacles)
-            {
-                leftControllerScript.ClosestObstacles.Add(Tuple.Create(gameObject, nearestDist));
-                leftControllerScript.ClosestObstacles.Sort((x, y) => x.Item2.CompareTo(y.Item2));
+            Vector3 nearestVertex = collider.ClosestPoint(LeftController.transform.position);
+            var nearestDist = Vector3.Distance(nearestVertex, LeftController.transform.position);
 
-            }
-            else
+            if (nearestDist < leftControllerScript.ClosestObstacle.Item2)
             {
-                if (leftControllerScript.ClosestObstacles[leftControllerScript.ClosestObstacles.Count - 1].Item2 > nearestDist)
-                {
-                    leftControllerScript.ClosestObstacles[leftControllerScript.ClosestObstacles.Count - 1] = Tuple.Create(gameObject, nearestDist);
-                    leftControllerScript.ClosestObstacles.Sort((x, y) => x.Item2.CompareTo(y.Item2));
-                }
-            }
-
-            if (nearestDist < leftControllerScript.closestDist)
-            {
-                leftControllerScript.closestDist = nearestDist;
-                leftControllerScript.closestObj = gameObject;
+                leftControllerScript.ClosestObstacle = Tuple.Create(gameObject, nearestDist);
             }
 
         }
 
 
-        if (run && rightControllerScript.ClosestObstacles != null)
+        if (run && rightControllerScript.ClosestObstacle.Item1 != null)
         {
             var userPoints = new List<Vector3>
             {
@@ -148,25 +115,9 @@ public class DepthFinder : MonoBehaviour
                 nearestDist = Mathf.Min(nearestDist, dist);
             }
 
-            if (rightControllerScript.ClosestObstacles.Count <= rightControllerScript.maxObstacles)
+            if (nearestDist < rightControllerScript.ClosestObstacle.Item2)
             {
-                rightControllerScript.ClosestObstacles.Add(Tuple.Create(gameObject, nearestDist));
-                rightControllerScript.ClosestObstacles.Sort((x, y) => x.Item2.CompareTo(y.Item2));
-
-            }
-            else
-            {
-                if (rightControllerScript.ClosestObstacles[rightControllerScript.ClosestObstacles.Count - 1].Item2 > nearestDist)
-                {
-                    rightControllerScript.ClosestObstacles[rightControllerScript.ClosestObstacles.Count - 1] = Tuple.Create(gameObject, nearestDist);
-                    rightControllerScript.ClosestObstacles.Sort((x, y) => x.Item2.CompareTo(y.Item2));
-                }
-            }
-
-            if (nearestDist < rightControllerScript.closestDist)
-            {
-                rightControllerScript.closestDist = nearestDist;
-                rightControllerScript.closestObj = gameObject;
+                leftControllerScript.ClosestObstacle = Tuple.Create(gameObject, nearestDist);
             }
 
         }
