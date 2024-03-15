@@ -6,13 +6,10 @@ using UnityEngine;
 
 public class ControllerScript : MonoBehaviour
 {
-    public int maxObstacles;
     public Tuple<GameObject, float> ClosestObstacle;
     public bool isLeftController;
     public HapticClip clip;	 // Assign this in the Unity editor
     private HapticClipPlayer player;
-
-    private GameObject prevClosestObj;
 
     void Awake()
     {

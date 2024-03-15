@@ -2216,8 +2216,6 @@ MonoBehaviour:
   maxObstacles: 10
   isLeftController: 0
   clip: {fileID: 2460798210113038985, guid: 66609bba7913ef746b3aef384c5a4db9, type: 3}
-  closestDist: 0
-  closestObj: {fileID: 0}
 --- !u!1 &377042833
 GameObject:
   m_ObjectHideFlags: 0
@@ -3268,7 +3266,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 3d5110c8dd92b2a45b2f9e0cac719da7, type: 3}
+  m_audioClip: {fileID: 8300000, guid: c8efb7968e97dc449a3073ed42b3710b, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -9667,8 +9665,6 @@ MonoBehaviour:
   maxObstacles: 10
   isLeftController: 1
   clip: {fileID: 2460798210113038985, guid: 66609bba7913ef746b3aef384c5a4db9, type: 3}
-  closestDist: 0
-  closestObj: {fileID: 0}
 --- !u!1 &1923737865
 GameObject:
   m_ObjectHideFlags: 0
@@ -9870,8 +9866,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxObstacles: 3
   audioClip: {fileID: 8300000, guid: 3d5110c8dd92b2a45b2f9e0cac719da7, type: 3}
-  closestDist: 0
-  closestObj: {fileID: 0}
   TrackedMaterial: {fileID: 2100000, guid: f803114db6a3bd548874cb87c81eeec1, type: 2}
 --- !u!1 &1946234627
 GameObject:
@@ -11068,7 +11062,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 3d5110c8dd92b2a45b2f9e0cac719da7, type: 3}
+  m_audioClip: {fileID: 8300000, guid: c8efb7968e97dc449a3073ed42b3710b, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1

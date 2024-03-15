@@ -89,7 +89,7 @@ public class DepthFinder : MonoBehaviour
             var userPoint = LeftController.transform.position;
 
             Vector3 nearestVertex = collider.ClosestPoint(LeftController.transform.position);
-            var nearestDist = Vector3.Distance(nearestVertex, LeftController.transform.position);
+            float nearestDist = Vector3.Distance(nearestVertex, LeftController.transform.position);
 
             if (nearestDist < leftControllerScript.ClosestObstacle.Item2)
             {
@@ -101,21 +101,11 @@ public class DepthFinder : MonoBehaviour
 
         if (run && rightControllerScript.ClosestObstacle.Item1 != null)
         {
-            var userPoints = new List<Vector3>
-            {
-                RightController.transform.position,
-                new Vector3(RightController.transform.position.x, RightController.transform.position.y / 2, RightController.transform.position.z),
-                new Vector3(RightController.transform.position.x, 0.2f, RightController.transform.position.z)
-            };
-            var nearestDist = float.MaxValue;
-            foreach (var point in userPoints)
-            {
-                Vector3 nearestVertex = collider.ClosestPoint(RightController.transform.position);
-                float dist = Vector3.Distance(nearestVertex, RightController.transform.position);
-                nearestDist = Mathf.Min(nearestDist, dist);
-            }
+            var userPoint = RightController.transform.position;
+            Vector3 nearestVertex = collider.ClosestPoint(RightController.transform.position);
+            float nearestDist = Vector3.Distance(nearestVertex, RightController.transform.position);
 
-            if (nearestDist < rightControllerScript.ClosestObstacle.Item2)
+            if (nearestDist < leftControllerScript.ClosestObstacle.Item2)
             {
                 leftControllerScript.ClosestObstacle = Tuple.Create(gameObject, nearestDist);
             }
