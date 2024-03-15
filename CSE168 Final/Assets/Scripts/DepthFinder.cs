@@ -28,13 +28,26 @@ public class DepthFinder : MonoBehaviour
     {
         if (run)
         {
-            Vector3 nearestVertex = NearestVertexTo(mainCamera.transform.position);
-            float dist = getDist(nearestVertex, mainCamera.transform.position);
-            if (dist < headsetScript.closestDist)
+            var userPoints = new List<Vector3>
             {
-                headsetScript.closestDist = dist;
+                mainCamera.transform.position,
+                new Vector3(mainCamera.transform.position.x, mainCamera.transform.position.y / 2, mainCamera.transform.position.z),
+                new Vector3(mainCamera.transform.position.x, 0.2f, mainCamera.transform.position.z)
+            };
+            var nearestDist = float.MaxValue;
+            foreach (var point in userPoints)
+            {
+                Vector3 nearestVertex = NearestVertexTo(mainCamera.transform.position);
+                float dist = getDist(nearestVertex, mainCamera.transform.position);
+                nearestDist = Mathf.Min(nearestDist, dist);
+            }
+            
+            if (nearestDist < headsetScript.closestDist)
+            {
+                headsetScript.closestDist = nearestDist;
                 headsetScript.closestObj = gameObject;
             }
+
         }
 
         //Call NearestVertexTo(rightController.position, roomObj)

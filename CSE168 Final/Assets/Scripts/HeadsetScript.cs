@@ -4,12 +4,15 @@ using UnityEngine;
 
 public class HeadsetScript : MonoBehaviour
 {
-    public float closestDist;
-    public GameObject closestObj;
+    public List<GameObject> closestObstacles;
+
+    [HideInInspector] public float closestDist;
+    [HideInInspector] public GameObject closestObj;
+    private GameObject prevClosestObj;
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -18,7 +21,18 @@ public class HeadsetScript : MonoBehaviour
         //set audio and vibration intensity to closestDist
         Debug.Log(closestDist);
         closestDist = float.MaxValue;
-        closestObj.GetComponentInChildren<Renderer>().material.color = Color.red;
-        closestObj = null;
+        if (closestObj != prevClosestObj)
+        {
+            if (prevClosestObj != null) 
+            {
+                prevClosestObj.GetComponentInChildren<Renderer>().material.color = Color.blue;
+            }
+            if (closestObj != null)
+            {
+                closestObj.GetComponentInChildren<Renderer>().material.color = Color.red;
+            }
+            prevClosestObj = closestObj;
+        }
+        
     }
 }
