@@ -1,92 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Project Proposal</title>
-    <!-- Add any additional styles or links to external stylesheets here -->
-  </head>
-  <body>
-    <!-- Project Information Section -->
-    <section>
-      <h1>Project Proposal</h1>
-      <p><strong>Name(s):</strong> Aidan Brem, Ruby Tseng, Joost Vonk</p>
-      <p>
-        <strong>Project Title:</strong> VisAR: Augmented Reality Navigation for
-        the Visually Impaired
-      </p>
-    </section>
-
-    <!-- Project Description Section -->
-    <section>
-      <h2>Project Description</h2>
-      <p>
-        Our project, VisAR, aims to enhance the navigation experience for
-        visually impaired individuals by using Augmented Reality (AR)
-        technology. Our AR system comprises four integral components designed to
-        address the unique challenges faced by the visually impaired community.
-        Firstly, the real-time environmental awareness module utilizes sensors
-        on Meta Quest and spatial mapping to provide users with detailed
-        information about their surroundings. Secondly, the proximity detection
-        feature ensures users' safety by alerting them to obstacles and
-        potential hazards in their path, fostering a secure and confident
-        mobility experience. Additionally, our system incorporates auditory and
-        haptic cues to offer intuitive navigation guidance, enhancing spatial
-        awareness and promoting an efficient and fluid movement through various
-        environments. Lastly, the integration of specialized audio technology
-        tailors the auditory feedback to the specific needs of visually impaired
-        users while navigating the space. Through these methods, our project
-        seeks to not only enhance the day-to-day mobility of visually impaired
-        individuals but also empower them with increased independence and
-        confidence in navigating their surroundings.
-      </p>
-    </section>
-
-    <!-- Goals Section -->
-    <section>
-      <h2>Goals</h2>
-      <ul>
-        <li>
-          Scan/generate model of living area: Areas must be scanned by
-          developers to provide users with an accurate model of their
-          surroundings with AR information overlaid on top of it
-        </li>
-        <li>
-          Proximity Detection: User will be alerted to proximity to obstacles
-          via the AR system scan through auditory and haptic feedback to assist
-          with avoidance
-        </li>
-        <li>
-          Spatialized Audio: Some auditory feedback will be spatialized,
-          allowing visually impaired users to use auditory feedback for distance
-          assessment
-        </li>
-        <li>
-          Feedback adjustment interface: User will be able to customize the type
-          and intensity of the feedback transmitted to ensure a comfortable
-          experience
-        </li>
-        <li>
-          Object of interest identification (Stretch goal): Object of Interest
-          Identification: User will be able to be alerted to objects of interest
-          via the AR system scan through auditory and haptic feedback to assist
-          with identification
-        </li>
-      </ul>
-    </section>
-
-    <!-- Timeline Section -->
-    <section>
-      <h2>Timeline</h2>
-      <ul>
-        <li>Feb 2: Research</li>
-        <li>Feb 9: Spatial Modeling</li>
-        <li>Feb 23: Proximity Detection</li>
-        <li>March 1: Auditory/Haptic Cues</li>
-        <li>March 8: Spatialized Audio</li>
-        <li>March 15: Object of Interest ID/Contingency Time</li>
-      </ul>
-    </section>
-  </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VisAR Project Report</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto&display=swap">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+    <header>
+        <h1>VisAR Project Report</h1>
+        <p>Presented by Aidan Brem, Ruby Tseng, and Joost "Will" Vonk</p>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="report.pdf">Technical Paper</a></li>
+            <li><a href="VisAR.apk">Downloadable APK</a></li>
+        </ul>
+    </nav>
+    <main>
+        
+        <section id="project-description">
+            <h2>Project Description</h2>
+            <p>The VisAR project aims to transform navigation for the visually impaired through augmented reality (AR) technology. This project combines the power of Unity and the Meta Quest headset to create a comprehensive navigation aid. By integrating Meta Quest's Scene API with Unity's development environment, VisAR offers real-time obstacle detection, proximity alerts, and intuitive guidance to improve spatial awareness and support independent mobility for users with visual impairments. Emphasizing user-centric design and iterative development, VisAR represents a holistic approach to navigation that empowers individuals with visual impairments to navigate confidently and autonomously. The results of this project highlight the potential of AR-based solutions to address navigation challenges, fostering inclusivity and accessibility for all.</p>
+        </section>
+        <section id="images">
+            <h2>Images</h2>
+            <img src="embeds/haptic.PNG" alt="Image 1">
+            <img src="embeds/thumb.jpg" alt="Image 2">
+        </section>
+        <section id="video">
+            <h2>Video</h2>
+            <video style="width: 500px;" controls>
+                <source src="embeds/Video.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </section>
+        <section id="project-details">
+            <h2>Project Details</h2>
+            <p>The VisAR project aims to create a navigation aid for the visually impaired using augmented reality (AR) technology. Below are the key details of the project:</p>
+            <h3>Data Structures:</h3>
+            <p>The primary data structure used in VisAR is a sorted list to maintain the closest obstacles to the user. Each entry in the list consists of a GameObject reference representing the obstacle, its distance to the user, and the closest point on the obstacle's collider.</p>
+            
+            <h3>Program Structure:</h3>
+            <p>VisAR is developed using Unity, a popular game development platform, and is optimized for the Meta Quest 3 headset. The program structure comprises modular components for obstacle detection, proximity alerts, and user interaction. The integration of Meta Quest's Scene API and Unity's collision system forms the backbone of the obstacle detection mechanism.</p>
+            
+            <h3>Related Works:</h3>
+            <p>VisAR builds upon existing research and technologies in the field of AR-based navigation aids for the visually impaired. Relevant works include studies on obstacle detection algorithms, user interface design for accessibility, and AR applications in assistive technology.</p>
+            
+            <h3>Improvements:</h3>
+            <p>One of the notable improvements in VisAR is the use of dynamically positioned audio sources for proximity alerts, providing more accurate spatial feedback to the user. Additionally, the incorporation of multiple equidistant points for obstacle detection enhances the system's ability to detect obstacles near different parts of the user's body.</p>
+            
+            <h3>References:</h3>
+            <ul>
+                <li>Teutsch, Steven M., et al., editors. Making Eye Health a Population Imperative: A Vision for Tomorrow, 2016, https://www.ncbi.nlm.nih.gov/
+                  books/NBK402367/</li>
+                <li>Kuriakose, Bineeth, et al. “Tools and Technologies for Blind and Visually Impaired Navigation Support: A Review.” Taylor & Francis Online, IETE Technical Review, 27 Sept. 2020, www.tandfonline.com/doi/full/
+                  10.1080/02564602.2020.1819893</li>
+            </ul>
+        </section>
+        <section id="users-guide">
+            <h2>User's Guide</h2>
+            <p>To compile VisAR, follow these steps:
+                <ol>
+                <li>Open the VisAR Unity project in Unity Editor version 2022.3.11f1.</li>
+                <li>Ensure that the project settings are configured for the Meta Quest platform. </li>
+                <li>Build the project for the desired target platform (e.g., Android). </li>
+                <li>Install Meta Quest Developer Hub</li>
+                <li>Connect the Headset to a computer using USB</li>
+                <li>If you are using Windows, download the OEM USB driver. If you are using macOS, skip the next step as you do not need any additional USB drivers.
+                <li>Extract the oculus-adb-driver-2.0 zip file, go to the /oculus-go-adb-driver-2.0/usb_driver/ folder, and double-click the android_winusb.inf file.</li>
+                <li>Open Terminal on your computer and run the following command to install the app: adb install -r [path of the apk file]</li>
+                <li>Put on the headset, go to Library > Unknown Sources, and then run the app.</li>
+                <li>For more precise details, please check the oculus documentation: Set Up Development Environment and Headset </li>   
+                </ol>
+            </p>
+        </section>
+    
+    </main>
+    <footer>
+        <p>CSE168 Winter 2024</p>
+    </footer>
+</div>
+</body>
 </html>
