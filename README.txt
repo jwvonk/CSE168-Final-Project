@@ -8,10 +8,14 @@ VisAR is developed using Unity 2022.3.11f1, a cross-platform game engine. The ap
 
 Compilation:
 To compile VisAR, follow these steps:
-1. Open the VisAR Unity project in Unity Editor.
-2. Ensure that the project settings are configured for the Meta Quest platform.
-3. Build the project for the desired target platform (e.g., Android).
-4. Transfer the compiled application to the Meta Quest headset using appropriate deployment methods (e.g., USB connection, wireless transfer).
+1.Install the apk file at the top of the webpage
+2.Install Meta Quest Developer Hub
+3.Connect the Headset to a computer using USB
+4.If you are using Windows, download the OEM USB driver. If you are using macOS, skip the next step as you do not need any additional USB drivers.
+5.Extract the oculus-adb-driver-2.0 zip file, go to the /oculus-go-adb-driver-2.0/usb_driver/ folder, and double-click the android_winusb.inf file.
+6.Open Terminal on your computer and run the following command to install the app: adb install -r [path of the apk file]
+7.Put on the headset, go to Library > Unknown Sources, and then run the app.
+8.For more precise details, please check the oculus documentation: Set Up Development Environment and Headset   
 
 Usage:
 Once installed on the Meta Quest headset, users can launch the VisAR application and follow these instructions to navigate their surroundings:
