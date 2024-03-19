@@ -40,9 +40,21 @@ public class HeadsetScript : MonoBehaviour
             AudioSource audioSource = AudioSources[i].GetComponent<AudioSource>();
             if (audioSource != null)
             {
-                audioSource.clip = Clips[(Clips.Count / ClosestObstacles.Count) * i];
+                //audioSource.clip = Clips[(Clips.Count / ClosestObstacles.Count) * i];
+                GameObject obj = ClosestObstacles[i].Item1;
+                Transform objTransform = obj.transform;
+                if (objTransform.GetComponent<OVRSemanticClassification>().Contains("WALL_FACE"))
+                {
+                    audioSource.clip = Clips[0];
+                }
+
+                else
+                {
+                    audioSource.clip = Clips[1];
+                }
                 if (!audioSource.isPlaying)
                 {
+                    audioSource.pitch = 1 / pair.Item2;
                     audioSource.Play();
                 }
             }
